@@ -1,0 +1,55 @@
+<!doctype html>
+<head><title>autoember</title></head>
+<body>
+  <h1>Auto Embed Youtube</h1>
+  <section id="nohash">
+    <h2>No hash provided</h2>
+   Please provide the url now:<br/>
+   <input id="url-input" style="width:100%">
+   <button id="go">Watch video here</button>
+  </section>
+  <section id="view">
+    <h2>Loading</h2>
+    <iframe id="video" width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </section>
+<script>
+function showSection(id)
+{
+  console.log("showSection: "+id);
+  var sections=document.getElementsByTagName("section");
+  for(var i=0;i<sections.length;i++)
+  {
+    console.log(sections[i].getAttribute("id"));
+    if(sections[i].getAttribute("id")!=id)
+    {
+      sections[i].style.display="none";
+    }else
+    {
+      sections[i].style.display="";
+    }
+  }
+}
+var hash=window.location.hash;
+if(hash.length==0)
+{
+  showSection("nohash");
+  document.getElementById("go").addEventListener("click",extractID);
+  // let user input a url and take it from there.
+}else
+{
+  showSection("view");
+  document.getElementById("url-input").value=window.location.hash.substr(1,window.location.hash.length-1);
+  // make it as if user presses go button to get one process again..
+  extractID();
+}
+function extractID()
+{
+  var url=document.getElementById("url-input").value;
+  console.log("url:"+ url);
+  var parts=url.split("v=");
+  // code from youtube
+  document.getElementById("video").src="https://www.youtube-nocookie.com/embed/"+parts[1];
+}
+</script>
+</body>
+</html>
